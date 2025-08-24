@@ -13,7 +13,7 @@
 
 .flip-card-inner {
 	transform-style: preserve-3d;
-	transition: transform 500ms ease;
+	transition: transform 250ms ease;
 }
 
 .flip-card.flipped .flip-card-inner {
