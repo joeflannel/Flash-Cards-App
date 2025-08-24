@@ -26,10 +26,10 @@ export interface SrsConfig {
 }
 
 export const defaultSrsConfig: SrsConfig = {
-	minEaseFactor: 1.3,
+	minEaseFactor: 1,
 	goodBonus: 1.15,
 	learningAgainDelaySeconds: 30,
-	initialGoodIntervalDays: 2,
+	initialGoodIntervalDays: 3,
 };
 
 export interface SrsProgressIndex {
