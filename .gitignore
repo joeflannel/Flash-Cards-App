@@ -3,4 +3,9 @@ dist
 .DS_Store
 .vite
 
+# Vite development logs
+vite-dev*.log
+vite-dev-*.out.log
+vite-dev-*.err.log
+
 
