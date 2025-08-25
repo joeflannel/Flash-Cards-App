@@ -7,6 +7,10 @@ Minimal flashcards web app with an SM-2–style spaced repetition scheduler and 
   - Add Card modal: enter bold word (target learning word), sentence with the word, translation of the sentence
   - Manage modal: edit/delete existing cards
   - Formatting: convert lines of sentences to Bullet/Number lists
+- **NEW: AI-Powered Sentence Generation**
+  - Generate contextual sentences using OpenAI GPT API
+  - Bulk import words and auto-generate sentences for multiple words at once
+  - Support for multiple languages (Spanish/English by default)
 - Study flow
   - Front: sentence with one word in bold; Back: translation
   - Click the card to flip; rate with: Again or Good
@@ -21,6 +25,7 @@ Minimal flashcards web app with an SM-2–style spaced repetition scheduler and 
 
 ### Requirements
 - Node.js ≥ 18
+- Hugging Face API key (optional, for AI-powered sentence generation - completely free!)
 
 ### Install & Run
 ```bash
@@ -29,6 +34,19 @@ npm run dev
 ```
 
 Open the local URL printed in the terminal.
+
+### AI-Powered Sentence Generation Setup (Optional)
+
+To enable AI-powered sentence generation:
+
+1. Get a **free** Hugging Face API key from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. Create a `.env` file in the project root:
+   ```bash
+   VITE_HUGGINGFACE_API_KEY=your_actual_api_key_here
+   ```
+3. Restart the development server
+
+**Note:** Without an API key, the AI generation feature will be disabled and you'll need to manually enter sentences and translations. The Hugging Face API is completely free with no usage limits!
 
 ### One-click server scripts (Windows)
 - Start (double-click): `scripts/start-dev.bat`
@@ -56,8 +74,11 @@ npm run test
 ### Structure
 - `src/data/cards.ts`: seed cards
 - `src/utils/scheduler.ts`: SRS state and rating (`again` | `good`), progress reconciliation, due selection
+- `src/utils/aiService.ts`: Hugging Face API integration for sentence generation (free!)
+
 - `src/components/Flashcard.tsx`: flip card UI
 - `src/components/CardManager.tsx`: manage modal (edit/delete, list helpers, due preview)
-- `src/components/AddCardModal.tsx`: add modal (generate, list helpers)
+- `src/components/AddCardModal.tsx`: add modal (generate, list helpers, AI-powered generation)
+- `src/components/BulkWordImporter.tsx`: bulk word import with sentence generation
 - `src/hooks/useFlashcardQueue.ts`: SRS-driven study queue
 - `src/index.css`: flip animation styles

@@ -5,6 +5,8 @@ import { useFlashcardQueue } from './hooks/useFlashcardQueue';
 import type { CardData } from './utils/scheduler';
 import { CardManager } from './components/CardManager';
 import { AddCardModal } from './components/AddCardModal';
+import { BulkWordImporter } from './components/BulkWordImporter';
+import { ModelSelector } from './components/ModelSelector';
 
 function useLocalStorageCards(key: string, initial: CardData[]): [CardData[], React.Dispatch<React.SetStateAction<CardData[]>>] {
     const [state, setState] = React.useState<CardData[]>(() => {
@@ -35,6 +37,7 @@ export default function App(): JSX.Element {
 	const { current, remaining, isFlipped, flip, rate } = useFlashcardQueue(cards);
 	const [isManagerOpen, setManagerOpen] = React.useState(false);
 	const [isAddOpen, setAddOpen] = React.useState(false);
+	const [isBulkImporterOpen, setBulkImporterOpen] = React.useState(false);
 
 	const handleCreate = React.useCallback((data: Omit<CardData, 'id'>) => {
 		const newCard: CardData = {
@@ -56,6 +59,11 @@ export default function App(): JSX.Element {
 		setCards(defaultCards);
 	}, []);
 
+	const handleBulkImport = React.useCallback((cards: Array<{ sentence: string; boldWord: string; translation: string }>) => {
+		cards.forEach(card => handleCreate(card));
+		setBulkImporterOpen(false);
+	}, [handleCreate]);
+
 	return (
 		<div className="min-h-screen flex flex-col">
 			<header className="px-4 sm:px-6 py-4 border-b border-slate-200 dark:border-slate-800">
@@ -75,12 +83,19 @@ export default function App(): JSX.Element {
 						>
 							Manage
 						</button>
+						<button
+							onClick={() => setBulkImporterOpen(true)}
+							className="px-3 py-1.5 rounded-md text-sm font-medium shadow-sm ring-1 ring-slate-300 dark:ring-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700"
+						>
+							Bulk Import
+						</button>
 					</div>
 				</div>
 			</header>
 
 			<main className="flex-1 px-4 sm:px-6 py-8">
 				<div className="max-w-5xl mx-auto flex flex-col items-center gap-6">
+					<ModelSelector />
 					{current ? (
 						<>
 							<Flashcard
@@ -132,6 +147,14 @@ export default function App(): JSX.Element {
 								</div>
 							</div>
 						</div>
+					)}
+
+					{/* Bulk Word Importer Modal */}
+					{isBulkImporterOpen && (
+						<BulkWordImporter
+							onClose={() => setBulkImporterOpen(false)}
+							onImport={handleBulkImport}
+						/>
 					)}
 				</div>
 			</main>
