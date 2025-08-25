@@ -54,9 +54,7 @@ if (-not (Test-Path $viteJs)) {
     exit 1
 }
 
-# Default values for host and port
-$HostAddress = "localhost"
-$Port = 3000
+
 
 Write-Info "Starting dev server on http://${HostAddress}:${Port} (strict port)..."
 Write-Host ""
